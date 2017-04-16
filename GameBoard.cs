@@ -80,12 +80,13 @@ namespace nz_puzzle_game_solver
 
         public GameTile GetGameTile(Point p) 
         {
+            if (p.X < 0 || p.Y < 0) return null;
             if (p.X >= Rows || p.Y >= Columns) return null;
             
             return Board[p.X, p.Y];
         }
 
-        public bool GameIsCompleted => GetGameTiles().All(x => x.IsInitialTile == false);
+        public bool IsGameCompleted => GetGameTiles().All(x => x.IsInitialTile == false);
 
         public void PlaceMove(GameTileMove move) 
         {

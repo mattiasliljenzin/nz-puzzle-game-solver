@@ -10,7 +10,7 @@ namespace nz_puzzle_game_solver
 
         public bool IsInitialTile { get; set; }
         public bool EqualsType(GameTile tile) {
-            return string.Equals(this.Name, tile?.Name, StringComparison.CurrentCultureIgnoreCase);
+            return string.Equals(this.Name, tile.Name, StringComparison.CurrentCultureIgnoreCase);
         }
     }
 

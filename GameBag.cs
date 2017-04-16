@@ -23,7 +23,7 @@ namespace nz_puzzle_game_solver
             return Tiles.Remove(tile);
         }
 
-        private List<GameTile> Tiles => new List<GameTile>(16);
+        private List<GameTile> Tiles { get; } = new List<GameTile>(16);
 
         private IEnumerable<T> Generate<T>(int count) where T : GameTile, new() {
             return Enumerable.Range(0, count).Select(x => new T());

@@ -13,9 +13,12 @@ namespace nz_puzzle_game_solver
     {
         public bool Solve(GameBoard board, GameBag bag, IList<IGameRule> rules)
         {
-            var attemptLimit = 10000;
+            var attemptLimit = 1;
             var attempts = new List<SolvingAttempt>();
             
+            Console.WriteLine("Trying to solve with BruteForceStrategy!");
+            Console.WriteLine("Number of attempts set to " + attemptLimit);
+
             for (int i = 0; i < attemptLimit; i++)
             {
                 var attempt = new SolvingAttempt();
@@ -25,32 +28,36 @@ namespace nz_puzzle_game_solver
 
                 foreach (var tile in bag.GetTiles())
                 {
+                    Console.WriteLine("Processing tile..");
                     foreach (var point in board.GetGameTileLocations())
                     {
                         var move = new GameTileMove(tile, point);
                         
-                        if (attempts.Any(x => x.HasBeenPlayed(move))) continue;
+                        if (attempts.Any(x => x.HasBeenPlayed(move))) {
+                            //Console.WriteLine("Attempt {0}: FAILED (already played) - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
+                            continue;                            
+                        }
 
                         if (rules.All(x => x.IsValid(tile, board, point)))
                         {   
-                            Console.WriteLine("Attempt {0}: Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
+                            Console.WriteLine("Attempt {0}: Success - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
                             
                             board.PlaceMove(move);
                             attempt.Add(move);
-                            bag.Remove(tile);
+
+                            if (board.IsGameCompleted)
+                            {
+                                PrintGameCompletedMessage(board);
+                                return true;
+                            }
+                            continue;
+                        }
+                        else {
+                            //Console.WriteLine("Attempt {0}: FAILED (invalid rule(s)) - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
                         }
                     }
                 }
-
-                if (board.GameIsCompleted)
-                {
-                    PrintGameCompletedMessage(board);
-                    return true;
-                }
-                else 
-                {
-                    Console.WriteLine("Attempt {0}: Failed", attempt.Id);
-                }
+                Console.WriteLine("Attempt {0}: Failed", attempt.Id);
             }
 
             return false;

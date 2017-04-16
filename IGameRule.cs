@@ -10,7 +10,8 @@ namespace nz_puzzle_game_solver
     {
         public bool IsValid(GameTile tile, GameBoard board, Point p)
         {
-            return tile.EqualsType(board.GetGameTile(p));
+            var existingTile = board.GetGameTile(p);
+            return existingTile == null ? false : !tile.EqualsType(existingTile); 
         }
     }
 
@@ -18,21 +19,24 @@ namespace nz_puzzle_game_solver
     {
         public bool IsValid(GameTile tile, GameBoard board, Point p)
         {
-            Func<int, int, bool> match = (x1,y1) => tile.EqualsType(board.GetGameTile(new Point(x1, y1)));
+            Func<int, int, bool> moveIsAllowed = (x1,y1) => {
+                var existingTile = board.GetGameTile(new Point(x1, y1));
+                return existingTile == null ? false : !tile.EqualsType(existingTile); 
+            };
 
             var x = p.X;
             var y = p.Y;
 
-            if (match(x - 1, y - 1)) return true;
-            if (match(x, y - 1)) return true;
-            if (match(x + 1, y - 1)) return true;
+            if (moveIsAllowed(x - 1, y - 1)) return true;
+            if (moveIsAllowed(x, y - 1)) return true;
+            if (moveIsAllowed(x + 1, y - 1)) return true;
 
-            if (match(--x, y)) return true;
-            if (match(++x, y)) return true;
+            if (moveIsAllowed(--x, y)) return true;
+            if (moveIsAllowed(++x, y)) return true;
 
-            if (match(x - 1, y + 1)) return true;
-            if (match(x, y + 1)) return true;
-            if (match(x + 1, y + 1)) return true;
+            if (moveIsAllowed(x - 1, y + 1)) return true;
+            if (moveIsAllowed(x, y + 1)) return true;
+            if (moveIsAllowed(x + 1, y + 1)) return true;
 
             return false;
         }

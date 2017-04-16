@@ -16,7 +16,6 @@ namespace nz_puzzle_game_solver
         {
             _board.Initialize();
             _board.Print();
-
             var strategy = new BruteForceStrategy();
             strategy.Solve(_board, _bag, _rules);
         }
