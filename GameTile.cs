@@ -7,6 +7,10 @@ namespace nz_puzzle_game_solver
         public abstract string Name { get; }
         public abstract char Icon { get; }
         public abstract ConsoleColor Color { get; } 
+
+        public bool EqualsType(GameTile tile) {
+            return string.Equals(this.Name, tile?.Name, StringComparison.CurrentCultureIgnoreCase);
+        }
     }
 
     public class KiwiTile : GameTile

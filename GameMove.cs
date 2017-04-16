@@ -1,8 +1,8 @@
 namespace nz_puzzle_game_solver
 {
-    class GameMove : IPosition {
+    public class GameMove {
 
-        public byte X { get; set; }
-        public byte Y { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 }

@@ -53,5 +53,11 @@ namespace nz_puzzle_game_solver
             Console.WriteLine("+----------------------+");
             Console.WriteLine();
         }
+
+        public GameTile GetGameTile(int x, int y) {
+            if (x >= Rows || y >= Columns) return null;
+            
+            return Board[x, y];
+        }
     }
 }
