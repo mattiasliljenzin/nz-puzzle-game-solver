@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace nz_puzzle_game_solver
 {
-    internal class GameBag
+    public class GameBag
     {
         public GameBag() {
             Tiles.AddRange(Generate<SheepTile>(3));
@@ -13,7 +13,17 @@ namespace nz_puzzle_game_solver
             Tiles.AddRange(Generate<CityTile>(4));
         }
 
-        public List<GameTile> Tiles => new List<GameTile>(16);
+        public IEnumerable<GameTile> GetTiles() 
+        {
+            return Tiles;
+        }
+
+        public bool Remove(GameTile tile) 
+        {
+            return Tiles.Remove(tile);
+        }
+
+        private List<GameTile> Tiles => new List<GameTile>(16);
 
         private IEnumerable<T> Generate<T>(int count) where T : GameTile, new() {
             return Enumerable.Range(0, count).Select(x => new T());

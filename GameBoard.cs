@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace nz_puzzle_game_solver
 {
@@ -8,25 +10,25 @@ namespace nz_puzzle_game_solver
         private readonly GameTile[,] Board = new GameTile[Rows, Columns];
         public void Initialize() 
         {
-            Board[0, 0] = new SheepTile();
-            Board[0, 1] = new KiwiTile();
-            Board[0, 2] = new SheepTile();
-            Board[0, 3] = new MapTile();
+            Board[0, 0] = new SheepTile() { IsInitialTile = true };
+            Board[0, 1] = new KiwiTile() { IsInitialTile = true };
+            Board[0, 2] = new SheepTile() { IsInitialTile = true };
+            Board[0, 3] = new MapTile() { IsInitialTile = true };
 
-            Board[1, 0] = new CityTile();
-            Board[1, 1] = new MapTile();
-            Board[1, 2] = new CityTile();
-            Board[1, 3] = new FernTile();
+            Board[1, 0] = new CityTile() { IsInitialTile = true };
+            Board[1, 1] = new MapTile() { IsInitialTile = true };
+            Board[1, 2] = new CityTile() { IsInitialTile = true };
+            Board[1, 3] = new FernTile() { IsInitialTile = true };
 
-            Board[2, 0] = new KiwiTile();
-            Board[2, 1] = new FernTile();
-            Board[2, 2] = new KiwiTile();
-            Board[2, 3] = new MapTile();
+            Board[2, 0] = new KiwiTile() { IsInitialTile = true };
+            Board[2, 1] = new FernTile() { IsInitialTile = true };
+            Board[2, 2] = new KiwiTile() { IsInitialTile = true };
+            Board[2, 3] = new MapTile() { IsInitialTile = true };
 
-            Board[3, 0] = new MapTile();
-            Board[3, 1] = new SheepTile();
-            Board[3, 2] = new CityTile();
-            Board[3, 3] = new FernTile();
+            Board[3, 0] = new MapTile() { IsInitialTile = true };
+            Board[3, 1] = new SheepTile() { IsInitialTile = true };
+            Board[3, 2] = new CityTile() { IsInitialTile = true };
+            Board[3, 3] = new FernTile() { IsInitialTile = true };
         }
 
         public void Print() 
@@ -54,10 +56,40 @@ namespace nz_puzzle_game_solver
             Console.WriteLine();
         }
 
-        public GameTile GetGameTile(int x, int y) {
-            if (x >= Rows || y >= Columns) return null;
+        private IEnumerable<GameTile> GetGameTiles() 
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    yield return Board[i, j];
+                }
+            }
+        }
+
+        public IEnumerable<Point> GetGameTileLocations() 
+        {
+            for (int i = 0; i < Rows; i++)
+            {
+                for (int j = 0; j < Columns; j++)
+                {
+                    yield return new Point(i, j);
+                }
+            }
+        }
+
+        public GameTile GetGameTile(Point p) 
+        {
+            if (p.X >= Rows || p.Y >= Columns) return null;
             
-            return Board[x, y];
+            return Board[p.X, p.Y];
+        }
+
+        public bool GameIsCompleted => GetGameTiles().All(x => x.IsInitialTile == false);
+
+        public void PlaceMove(GameTileMove move) 
+        {
+            Board[move.Location.X, move.Location.Y] = move.Tile;
         }
     }
 }
