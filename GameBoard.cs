@@ -98,6 +98,13 @@ namespace nz_puzzle_game_solver
         public void PlaceMove(GameTileMove move) 
         {
             Board[move.Location.X, move.Location.Y] = move.Tile;
+
+            var currentTileCount = PlacedTilesCount;
+            if(currentTileCount > TileRecord) {
+                TileRecord = currentTileCount;
+            }
         }
+
+        public int TileRecord {get;set;}
     }
 }

@@ -19,7 +19,9 @@ namespace nz_puzzle_game_solver
             _board.Print();
             var strategy = new BruteForceStrategy();
             strategy.Solve(_board, _bag, _rules);
-            _board.Print(true); 
+            System.Console.WriteLine();
+            System.Console.WriteLine("Record was " + _board.TileRecord);
+            //_board.Print(true); 
         }
 
     }
