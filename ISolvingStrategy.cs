@@ -13,7 +13,7 @@ namespace nz_puzzle_game_solver
     {
         public bool Solve(GameBoard board, GameBag bag, IList<IGameRule> rules)
         {
-            var attemptLimit = 1;
+            var attemptLimit = 5;
             var attempts = new List<SolvingAttempt>();
             
             Console.WriteLine("Trying to solve with BruteForceStrategy!");
@@ -21,6 +21,8 @@ namespace nz_puzzle_game_solver
 
             for (int i = 0; i < attemptLimit; i++)
             {
+                board.Initialize();
+                
                 var attempt = new SolvingAttempt();
                 attempts.Add(attempt);
 
@@ -28,19 +30,23 @@ namespace nz_puzzle_game_solver
 
                 foreach (var tile in bag.GetTiles())
                 {
-                    Console.WriteLine("Processing tile..");
+                    //Console.WriteLine("Processing tile..");
                     foreach (var point in board.GetGameTileLocations())
                     {
                         var move = new GameTileMove(tile, point);
                         
                         if (attempts.Any(x => x.HasBeenPlayed(move))) {
-                            //Console.WriteLine("Attempt {0}: FAILED (already played) - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
+                            Console.WriteLine("Attempt {0}: FAILED (already played) - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
                             continue;                            
                         }
 
+                        //Console.WriteLine();
+                        var existingTile = board.GetGameTile(point);
+                        //Console.WriteLine("Attempt {0}: Trying to move {1} to {2} ({3},{4})", attempt.Id, move.Tile.Name, existingTile.Name, move.Location.X, move.Location.Y);
+                            
                         if (rules.All(x => x.IsValid(tile, board, point)))
                         {   
-                            Console.WriteLine("Attempt {0}: Success - Moving {1} to ({2},{3})", attempt.Id, move.Tile.Name, move.Location.X, move.Location.Y);
+                            //Console.WriteLine("Attempt {0}: Success - Moving {1} to {2} ({3},{4})", attempt.Id, move.Tile.Name, existingTile.Name, move.Location.X, move.Location.Y);
                             
                             board.PlaceMove(move);
                             attempt.Add(move);
@@ -57,7 +63,8 @@ namespace nz_puzzle_game_solver
                         }
                     }
                 }
-                Console.WriteLine("Attempt {0}: Failed", attempt.Id);
+                Console.WriteLine("Attempt {0}: Failed. Number of tiles placed: {1}", attempt.Id, board.PlacedTilesCount);
+                Console.WriteLine();
             }
 
             return false;

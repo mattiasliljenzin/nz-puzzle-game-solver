@@ -6,11 +6,11 @@ namespace nz_puzzle_game_solver
     public class GameBag
     {
         public GameBag() {
-            Tiles.AddRange(Generate<SheepTile>(3));
-            Tiles.AddRange(Generate<MapTile>(3));
-            Tiles.AddRange(Generate<KiwiTile>(3));
-            Tiles.AddRange(Generate<FernTile>(3));
-            Tiles.AddRange(Generate<CityTile>(4));
+             Tiles.AddRange(Generate<SheepTile>(3));
+             Tiles.AddRange(Generate<MapTile>(3));
+             Tiles.AddRange(Generate<KiwiTile>(3));
+             Tiles.AddRange(Generate<FernTile>(3));
+             Tiles.AddRange(Generate<CityTile>(4));
         }
 
         public IEnumerable<GameTile> GetTiles() 

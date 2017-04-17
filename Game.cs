@@ -9,7 +9,8 @@ namespace nz_puzzle_game_solver
         private readonly List<IGameRule> _rules = new List<IGameRule> 
         {
             new TargetTileOfSameTypeNotAllowedRule(),
-            new SurroundingTileOfSameTypeNotAllowedRule()
+            new SurroundingTileOfSameTypeNotAllowedRule(),
+            new TargetTileHasAlreadyBeenPlacedRule()
         };
 
         public void Run() 
@@ -18,6 +19,7 @@ namespace nz_puzzle_game_solver
             _board.Print();
             var strategy = new BruteForceStrategy();
             strategy.Solve(_board, _bag, _rules);
+            _board.Print(true); 
         }
 
     }
